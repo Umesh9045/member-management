@@ -1,1 +1,118 @@
 <p>members works!</p>
+
+<div class="container-fluid">
+    <div class="row p-2 bg-info">
+        <div class="col-6">
+            <h3>Members</h3>
+        </div>
+
+        <div class="col-6 text-end">
+            <div class="btn btn-warning" (click)="openModal()">Add Member
+            </div>
+        </div>
+        <!-- <button class="btn btn-warning" (click)="openModal()">Add Member</button> -->
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of memberList; track $index) {
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.dob | date:'yyyy-MM-dd' }}</td>
+                <td>{{ item.role }}</td>
+                <td>
+                    <div class="btn btn-primary" (click)="onEdit(item)">Edit</div> &nbsp;
+                    <div class="btn btn-danger" (click)="onDelete(item.id)">Delete</div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="myModalLabel" *ngIf="memberForm.value.id !== 0">
+                    Update Member
+                </h1>
+                <h1 class="modal-title fs-5" id="myModalLabel" *ngIf="memberForm.value.id === 0">
+                    Add New Member
+                </h1>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Name" formControlName="name">
+                        <label>Name</label>
+                        <div *ngIf="memberForm.get('name')?.invalid && memberForm.get('name')?.touched">
+                            <small *ngIf="memberForm.get('name')?.errors?.['required']" class="text-danger">Name is
+                                required.</small>
+                            <small *ngIf="memberForm.get('name')?.errors?.['minlength']" class="text-danger">Name must
+                                be at least 3 characters long.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="date" class="form-control" formControlName="dob">
+                        <label>DOB</label>
+                        <div *ngIf="memberForm.get('dob')?.invalid && memberForm.get('dob')?.touched">
+                            <small *ngIf="memberForm.get('dob')?.errors?.['required']" class="text-danger">DOB is
+                                required.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Role" formControlName="role">
+                        <label>Role</label>
+                        <div *ngIf="memberForm.get('role')?.invalid && memberForm.get('role')?.touched">
+                            <small *ngIf="memberForm.get('role')?.errors?.['required']" class="text-danger">Role is
+                                required.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" placeholder="name@example.com" formControlName="email">
+                        <label>Email address</label>
+                        <div *ngIf="memberForm.get('email')?.invalid && memberForm.get('email')?.touched">
+                            <small *ngIf="memberForm.get('email')?.errors?.['required']" class="text-danger">Email is
+                                required.</small>
+                            <small *ngIf="memberForm.get('email')?.errors?.['email']" class="text-danger">Please enter a
+                                valid email address.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-floating">
+                        <input type="password" class="form-control" placeholder="Password" formControlName="password">
+                        <label>Password</label>
+                        <div *ngIf="memberForm.get('password')?.invalid && memberForm.get('password')?.touched">
+                            <small *ngIf="memberForm.get('password')?.errors?.['required']" class="text-danger">Password
+                                is required.</small>
+                            <small *ngIf="memberForm.get('password')?.errors?.['minlength']"
+                                class="text-danger">Password must be at least 6 characters long.</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button [disabled]="this.memberForm.invalid" type="submit" class="btn btn-primary">Save
+                        changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
