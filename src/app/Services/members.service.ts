@@ -18,9 +18,16 @@ export class MembersService {
     });
   }
 
-  getAllMembers() {
-    return this.http.get<Member[]>(this.apiUrl, { headers: this.getAuthHeaders() })
+  // getAllMembers() {
+  //   return this.http.get<Member[]>(this.apiUrl, { headers: this.getAuthHeaders() })
+  // }
+
+  getAllMembers(pageNumber: number, pageSize: number) {
+    return this.http.get<Member[]>(`${this.apiUrl}/${pageNumber}/${pageSize}`, {
+      headers: this.getAuthHeaders()
+    })
   }
+  
 
   addNewMember(data: any) {
     return this.http.post(this.apiUrl, data, { headers: this.getAuthHeaders() })

@@ -19,10 +19,11 @@ export class MembersComponent implements OnInit {
   memberService = inject(MembersService);
   memberFormValues: any;
   modal: any;
+  pageNumber = 1;
+  pageSize = 1;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) { }
 
-  }
   ngOnInit(): void {
     // throw new Error('Method not implemented.');
     this.setFormState();
@@ -85,10 +86,28 @@ export class MembersComponent implements OnInit {
     }
   }
 
+  // getAllMembers() {
+  //   this.memberService.getAllMembers().subscribe((result) => {
+  //     this.memberList = result;
+  //   })
+  // }
+
   getAllMembers() {
-    this.memberService.getAllMembers().subscribe((result) => {
+    this.memberService.getAllMembers(this.pageNumber, this.pageSize).subscribe((result) => {
       this.memberList = result;
-    })
+    });
+  }
+
+  prevPage() {
+    if (this.pageNumber > 1) {
+      this.pageNumber--;
+      this.getAllMembers();
+    }
+  }
+  
+  nextPage() {
+    this.pageNumber++;
+    this.getAllMembers();
   }
 
   onDelete(id: number) {

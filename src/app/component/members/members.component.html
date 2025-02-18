@@ -13,7 +13,7 @@
         <!-- <button class="btn btn-warning" (click)="openModal()">Add Member</button> -->
     </div>
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped mt-5 ml-2">
         <thead>
             <tr>
                 <th>Name</th>
@@ -37,6 +37,11 @@
             </tr>
             }
         </tbody>
+        <div class="mt-2">
+            <button class="btn btn-warning" (click)="prevPage()" [disabled]="pageNumber <= 1">Previous</button> &nbsp;&nbsp;
+            <button class="btn btn-warning" (click)="nextPage()">Next</button>
+        </div>
+        
     </table>
 </div>
 
